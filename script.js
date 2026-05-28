@@ -28,7 +28,7 @@ async function getSongs() {
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
         if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split("/songs/")[1])
+            songs.push(decodeURIComponent(element.getAttribute("href")))
         }
 
     }
@@ -42,7 +42,7 @@ const playMusic = (track, pause=false) => {
         currentSong.play();
         play.src = "img/pause2.svg"
     }
-    document.querySelector(".songinfo").innerHTML = decodeURI(track)
+    document.querySelector(".songinfo").innerHTML = track
     document.querySelector(".songtime").innerHTML = "00:00/00:00"
 }
 
@@ -56,7 +56,7 @@ async function main() {
     for (const song of songs) {
         songUL.innerHTML = songUL.innerHTML + `<li><img class="invert" src="img/music.svg" alt="">
                             <div class="info">
-                                <div>${song.replaceAll("%20", " ")}</div>
+                                <div>${song}</div>
                                 <div>Thunder</div>
                             </div>
                             <div class="playnow">
@@ -108,7 +108,7 @@ async function main() {
     preview.addEventListener("click", ()=>{
         console.log("previews clicked")
 
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+        let index = songs.indexOf(decodeURIComponent(currentSong.src.split("/").slice(-1)[0]))
         if((index-1) >= 0){
             playMusic(songs[index-1])
         }
@@ -117,7 +117,7 @@ async function main() {
      next.addEventListener("click", ()=>{
         console.log("next clicked")
 
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+        let index = songs.indexOf(decodeURIComponent(currentSong.src.split("/").slice(-1)[0]))
         if((index+1) < songs.length){
             playMusic(songs[index+1])
         }
@@ -126,8 +126,3 @@ async function main() {
 }
 
 main();
-
-
-
-
-
